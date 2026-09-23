@@ -4,19 +4,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Anansy | Web Design Network</title>
+  <meta name="google-site-verification" content="sW0E_30kNc3eWbCHo2qf60Jg3xb9I1_Vy2cSyMiFH3g" />
   <style>
     /* ==========================================================================
-       1. COLOR PALETTE & ATMOSPHERE
+       1. COLOR PALETTE & ATMOSPHERE (Eye-Friendly Off-White Slate & Accent)
        ========================================================================== */
     :root {
-      --bg-color: #121419;          /* Deep Dark Slate Canvas Background */
-      --node-bg: #20242d;          /* Default Node Slate Surface */
-      --node-border: #3b4252;       /* Border Color */
-      --node-hover: #88c0d0;        /* Pastel Cyan Border Hover */
-      --accent-terracotta: #d08f70; /* Warm Pastel Accent */
-      --accent-sage: #a3be8c;       /* Muted Pastel Green Accent */
-      --text-main: #e5e9f0;         /* Soft Off-white Text */
-      --text-muted: #9aa5b5;        /* Muted Gray Text */
+      --bg-color: #FDFBF7;          /* Soft Off-White Canvas Background */
+      --node-bg: #F3EFEA;          /* Warm Slate Card Fill */
+      --text-main: #0F172A;         /* Ink Slate High Focus Titles */
+      --text-muted: #64748B;        /* Steel Slate Body Text */
+      --accent-color: #ca6641;      /* Warm Rust/Terracotta Accent Color */
+      --accent-hover: #b25432;
       --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
 
@@ -36,7 +35,7 @@
       user-select: none;
     }
 
-    /* Floating Foreground Particle Overlay */
+    /* Particles Overlay */
     #particles-canvas {
       position: fixed;
       top: 0;
@@ -45,8 +44,8 @@
       height: 100vh;
       pointer-events: none;
       z-index: 150;
-      filter: blur(1.5px);
-      opacity: 0.7;
+      filter: blur(1px);
+      opacity: 0.5;
     }
 
     /* Fixed UI Controls */
@@ -56,21 +55,20 @@
       left: 24px;
       z-index: 100;
       background: var(--node-bg);
-      border: 1px solid var(--accent-terracotta);
-      color: #ffffff;
+      border: none;
+      color: var(--text-main);
       padding: 10px 18px;
       border-radius: 20px;
       font-size: 0.85rem;
-      font-weight: 500;
+      font-weight: 600;
       cursor: pointer;
-      backdrop-filter: blur(8px);
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
       transition: all 0.2s ease;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
     }
 
     .classic-view-btn:hover {
-      background: var(--accent-terracotta);
-      color: #121419;
+      background: var(--accent-color);
+      color: #ffffff;
     }
 
     .controls-hint {
@@ -78,13 +76,13 @@
       bottom: 24px;
       left: 24px;
       z-index: 100;
-      background: rgba(32, 36, 45, 0.85);
-      border: 1px solid var(--node-border);
+      background: var(--node-bg);
+      border: none;
       padding: 10px 16px;
       border-radius: 20px;
       font-size: 0.8rem;
       color: var(--text-muted);
-      backdrop-filter: blur(8px);
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
       pointer-events: none;
     }
 
@@ -94,22 +92,22 @@
       right: 24px;
       z-index: 100;
       background: var(--node-bg);
-      border: 1px solid var(--node-border);
+      border: none;
       color: var(--text-main);
       padding: 10px 18px;
       border-radius: 20px;
       font-size: 0.8rem;
+      font-weight: 500;
       cursor: pointer;
-      backdrop-filter: blur(8px);
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
       transition: all 0.2s ease;
     }
 
     .reset-btn:hover {
-      border-color: var(--node-hover);
-      color: var(--node-hover);
+      color: var(--accent-color);
     }
 
-    /* Viewport & World Transforms */
+    /* Viewport & Transforms */
     #viewport {
       width: 100vw;
       height: 100vh;
@@ -131,24 +129,6 @@
       transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    .world-radial-boundary {
-      position: absolute;
-      top: -2600px;
-      left: -2600px;
-      width: 5200px;
-      height: 5200px;
-      border-radius: 50%;
-      background: radial-gradient(
-        circle at center,
-        rgba(18, 20, 25, 0) 60%,
-        rgba(18, 20, 25, 0.5) 75%,
-        rgba(10, 11, 14, 0.95) 90%,
-        rgba(10, 11, 14, 1) 100%
-      );
-      pointer-events: none;
-      z-index: 0;
-    }
-
     #web-canvas {
       position: absolute;
       top: -6000px;
@@ -160,23 +140,23 @@
     }
 
     /* ==========================================================================
-       2. NODE TYPES
+       2. NODE STYLES
        ========================================================================== */
     .node {
       position: absolute;
       background: var(--node-bg);
-      border: 1px solid var(--node-border);
+      border: none;
       border-radius: 16px;
       padding: 24px 28px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
       z-index: 2;
-      transition: border-color 0.3s, box-shadow 0.3s, transform 0.2s;
+      transition: box-shadow 0.3s, transform 0.2s;
       cursor: pointer;
     }
 
     .node:hover {
-      border-color: var(--node-hover);
-      box-shadow: 0 0 22px rgba(136, 192, 208, 0.2);
+      box-shadow: 0 12px 32px rgba(15, 23, 42, 0.12);
+      transform: translateY(-2px);
     }
 
     /* Center Hub */
@@ -189,15 +169,16 @@
       align-items: center;
       justify-content: center;
       text-align: center;
-      border-color: var(--accent-terracotta);
       padding: 10px;
+      background: #ffffff;
+      box-shadow: 0 12px 36px rgba(15, 23, 42, 0.1);
     }
 
     .spider-icon {
       width: 52px;
       height: 52px;
       fill: none;
-      stroke: var(--accent-terracotta);
+      stroke: var(--accent-color);
       stroke-width: 1.8;
       margin-bottom: 6px;
       transition: transform 0.3s ease;
@@ -205,56 +186,57 @@
 
     .node.center-hub:hover .spider-icon {
       transform: scale(1.1);
-      stroke: var(--node-hover);
     }
 
     .node.center-hub h1 {
       font-size: 1.15rem;
       letter-spacing: 3px;
-      color: #ffffff;
+      color: var(--text-main);
       margin-top: 2px;
+      font-weight: 700;
     }
 
     .node.center-hub p {
-      font-size: 0.65rem;
-      color: var(--accent-terracotta);
+      font-size: 0.68rem;
+      color: var(--accent-color);
       text-transform: uppercase;
       letter-spacing: 1px;
+      font-weight: 600;
     }
 
     /* Primary Radial Nodes */
     .node.primary {
-      width: 240px;
+      width: 210px;
+      padding: 18px 22px;
     }
 
     .node.primary h2 {
-      font-size: 1.1rem;
-      font-weight: 500;
-      color: #ffffff;
-      margin-bottom: 4px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 2px;
     }
 
     .node.primary .tag {
-      font-size: 0.72rem;
-      color: var(--accent-sage);
+      font-size: 0.7rem;
+      color: var(--accent-color);
       text-transform: uppercase;
       letter-spacing: 1px;
+      font-weight: 600;
     }
 
     /* Sub-Nodes */
     .node.sub-node {
-      width: 360px;
-      background: rgba(32, 36, 45, 0.94);
-      backdrop-filter: blur(10px);
-      border-color: #2e3544;
+      width: 340px;
+      background: #ffffff;
       cursor: pointer;
     }
 
     .node.sub-node h3 {
       font-size: 1rem;
-      color: var(--node-hover);
+      color: var(--text-main);
       margin-bottom: 8px;
-      font-weight: 500;
+      font-weight: 700;
     }
 
     .node.sub-node p {
@@ -264,23 +246,23 @@
     }
 
     .node.sub-node.inquiry-node {
-      width: 420px;
+      width: 440px;
     }
 
     .node.decor-node {
-      width: 12px;
-      height: 12px;
+      width: 10px;
+      height: 10px;
       padding: 0;
       border-radius: 50%;
-      background: #2a303c;
-      border: 1px solid #3b4252;
+      background: #CBD5E1;
       pointer-events: none;
+      box-shadow: none;
     }
 
     /* Visual Illustrations */
     .flower-illustration {
       width: 100%;
-      height: 90px;
+      height: 80px;
       margin-bottom: 12px;
       display: flex;
       align-items: center;
@@ -288,16 +270,16 @@
     }
 
     .flower-illustration svg {
-      width: 80px;
-      height: 80px;
-      stroke: var(--accent-sage);
+      width: 70px;
+      height: 70px;
+      stroke: var(--accent-color);
       fill: none;
       stroke-width: 1.5;
     }
 
     .laptop-spider-illustration {
       width: 100%;
-      height: 110px;
+      height: 100px;
       margin-bottom: 12px;
       display: flex;
       align-items: center;
@@ -305,18 +287,16 @@
     }
 
     .laptop-spider-illustration svg {
-      width: 140px;
-      height: 100px;
-      stroke: var(--node-hover);
+      width: 130px;
+      height: 90px;
+      stroke: var(--text-main);
       fill: none;
       stroke-width: 1.4;
     }
 
-    /* ==========================================================================
-       FOUNDER CARD
-       ========================================================================== */
+    /* Founder Card */
     .node.sub-node.founder-node {
-      width: 440px;
+      width: 400px;
       cursor: default;
     }
 
@@ -332,13 +312,12 @@
       justify-content: center;
       border-radius: 12px;
       overflow: hidden;
-      border: 1px solid var(--accent-terracotta);
-      background-color: #121419;
+      background-color: var(--node-bg);
     }
 
     .founder-img {
       width: 100%;
-      height: 380px;
+      height: 340px;
       object-fit: cover;
       object-position: 50% 20%;
       display: block;
@@ -346,14 +325,13 @@
 
     .founder-email-link {
       font-size: 0.85rem;
-      color: var(--accent-sage);
+      color: var(--accent-color);
       text-decoration: none;
       display: inline-block;
-      transition: color 0.2s ease, text-decoration 0.2s ease;
+      font-weight: 500;
     }
 
     .founder-email-link:hover {
-      color: var(--node-hover);
       text-decoration: underline;
     }
 
@@ -361,14 +339,14 @@
       display: flex;
       flex-direction: column;
       gap: 10px;
-      border-top: 1px solid #2e3544;
+      border-top: 1px solid var(--node-bg);
       padding-top: 12px;
     }
 
     .founder-bio-section h4 {
-      font-size: 0.82rem;
-      color: var(--accent-terracotta);
-      font-weight: 600;
+      font-size: 0.8rem;
+      color: var(--text-main);
+      font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.6px;
       margin: 0;
@@ -391,7 +369,7 @@
 
     .founder-list li::before {
       content: "•";
-      color: var(--accent-sage);
+      color: var(--accent-color);
       position: absolute;
       left: 0;
     }
@@ -406,9 +384,9 @@
 
     .faq-item h4 {
       font-size: 0.88rem;
-      color: var(--accent-terracotta);
+      color: var(--text-main);
       margin-bottom: 3px;
-      font-weight: 500;
+      font-weight: 600;
     }
 
     .faq-item p {
@@ -418,7 +396,7 @@
     }
 
     /* ==========================================================================
-       3. INQUIRY FORM & THANK YOU CARD STYLES
+       3. INQUIRY FORM STYLES
        ========================================================================== */
     .inquiry-form {
       display: flex;
@@ -427,101 +405,137 @@
       margin-top: 10px;
     }
 
+    .form-group-label {
+      font-size: 0.8rem;
+      color: var(--text-main);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 4px;
+    }
+
+    .scale-container {
+      display: flex;
+      gap: 8px;
+    }
+
+    .scale-option {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: var(--node-bg);
+      border: none;
+      border-radius: 8px;
+      padding: 8px 4px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .scale-option input {
+      display: none;
+    }
+
+    .scale-option .scale-num {
+      font-size: 0.95rem;
+      font-weight: bold;
+      color: var(--text-main);
+    }
+
+    .scale-option .scale-desc {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      text-align: center;
+      margin-top: 2px;
+    }
+
+    .scale-option.selected {
+      background: #E5DDD3;
+    }
+
+    .scale-option.selected .scale-num {
+      color: var(--accent-color);
+    }
+
+    .estimate-box {
+      background: var(--node-bg);
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-top: 6px;
+      text-align: center;
+    }
+
+    .estimate-title {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 600;
+    }
+
+    .estimate-amount {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin: 2px 0;
+    }
+
+    .estimate-disclaimer {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      opacity: 0.8;
+      font-style: italic;
+    }
+
     .inquiry-form input,
+    .inquiry-form select,
     .inquiry-form textarea {
       width: 100%;
-      background: #181a20;
-      border: 1px solid var(--node-border);
+      background: var(--node-bg);
+      border: none;
       padding: 10px 14px;
       border-radius: 8px;
       color: var(--text-main);
-      font-size: 0.95rem;
+      font-size: 0.88rem;
       outline: none;
       font-family: inherit;
     }
 
     .inquiry-form input:focus,
+    .inquiry-form select:focus,
     .inquiry-form textarea:focus {
-      border-color: var(--node-hover);
+      box-shadow: 0 0 0 2px var(--accent-color);
     }
 
     .inquiry-form textarea {
       resize: vertical;
-      min-height: 110px;
+      min-height: 80px;
     }
 
-    .form-subscript {
-      font-size: 0.76rem;
-      color: var(--accent-sage);
-      margin-top: -4px;
-      line-height: 1.35;
+    .datetime-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .datetime-row input {
+      flex: 1;
     }
 
     .inquiry-form button {
-      background: var(--accent-terracotta);
+      background: var(--accent-color);
       color: #ffffff;
       border: none;
       padding: 12px;
       border-radius: 8px;
       cursor: pointer;
       font-size: 0.95rem;
-      font-weight: 500;
-      margin-top: 4px;
+      font-weight: 600;
+      margin-top: 6px;
       transition: background 0.2s;
     }
 
     .inquiry-form button:hover {
-      background: #c07e60;
-    }
-
-    /* CUSTOM INLINE THANK YOU CARD */
-    .thank-you-card {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      padding: 12px 0 4px 0;
-      animation: fadeIn 0.4s ease-in-out;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(6px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .thank-you-card h4 {
-      font-size: 1.15rem;
-      color: var(--accent-sage);
-      font-weight: 600;
-    }
-
-    .thank-you-card p {
-      font-size: 0.88rem;
-      line-height: 1.5;
-      color: var(--text-main);
-    }
-
-    .thank-you-card .close-hint {
-      font-size: 0.78rem !important;
-      color: #717d8f !important;
-      margin-top: -4px;
-    }
-
-    .thank-you-card .return-btn {
-      align-self: flex-start;
-      background: var(--node-bg);
-      border: 1px solid var(--accent-terracotta);
-      color: var(--text-main);
-      padding: 8px 18px;
-      border-radius: 20px;
-      font-size: 0.82rem;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      margin-top: 4px;
-    }
-
-    .thank-you-card .return-btn:hover {
-      background: var(--accent-terracotta);
-      color: #121419;
+      background: var(--accent-hover);
     }
 
     /* Modal Overlay */
@@ -531,8 +545,8 @@
       left: 0;
       width: 100vw;
       height: 100vh;
-      background: rgba(10, 11, 14, 0.85);
-      backdrop-filter: blur(8px);
+      background: rgba(15, 23, 42, 0.35);
+      backdrop-filter: blur(6px);
       z-index: 200;
       display: flex;
       align-items: center;
@@ -548,28 +562,27 @@
     }
 
     .modal-card {
-      background: #20242d;
-      border: 1px solid var(--accent-terracotta);
+      background: #ffffff;
       border-radius: 16px;
       padding: 32px;
       width: 90%;
       max-width: 540px;
       max-height: 90vh;
       overflow-y: auto;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+      box-shadow: 0 20px 40px rgba(15, 23, 42, 0.15);
       position: relative;
     }
 
     .modal-card h2 {
-      font-size: 1.5rem;
-      color: #ffffff;
+      font-size: 1.4rem;
+      color: var(--text-main);
       margin-bottom: 6px;
     }
 
     .modal-card p {
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       color: var(--text-muted);
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
 
     .close-modal-btn {
@@ -584,14 +597,14 @@
     }
 
     .close-modal-btn:hover {
-      color: #ffffff;
+      color: var(--text-main);
     }
 
     /* Autonomous Spider Crawler */
     #anansi-crawler {
       position: absolute;
-      width: 32px;
-      height: 32px;
+      width: 28px;
+      height: 28px;
       z-index: 10;
       pointer-events: none;
       transform: translate(-50%, -50%);
@@ -602,7 +615,7 @@
       width: 100%;
       height: 100%;
       fill: none;
-      stroke: var(--accent-terracotta);
+      stroke: var(--accent-color);
       stroke-width: 2.2;
     }
   </style>
@@ -612,15 +625,13 @@
   <!-- Parallax Foreground Particle Canvas -->
   <canvas id="particles-canvas"></canvas>
 
-  <!-- Navigation & Controls -->
-  <button class="classic-view-btn" onclick="toggleClassicModal(true)">Switch to Classic Form (Easy Read)</button>
-  <div class="controls-hint">Drag landscape to explore • Click spider or nodes to navigate</div>
+  <!-- Fixed Navigation Controls -->
+  <button class="classic-view-btn" onclick="toggleClassicModal(true)">Switch to Classic Form</button>
+  <div class="controls-hint">Drag canvas to explore • Click nodes to navigate</div>
   <button class="reset-btn" onclick="focusNode('node-center')">Center Web</button>
 
   <div id="viewport">
     <div id="world">
-      
-      <div class="world-radial-boundary"></div>
       <canvas id="web-canvas"></canvas>
 
       <!-- Spider Crawler -->
@@ -640,7 +651,7 @@
       </div>
 
       <!-- CENTER HUB -->
-      <div class="node center-hub" id="node-center" style="left: -100px; top: -100px;" onclick="focusNode('node-contact-detail')">
+      <div class="node center-hub" id="node-center" style="left: -100px; top: -100px;" onclick="focusNode('node-contact')">
         <svg class="spider-icon" viewBox="0 0 100 100">
           <ellipse cx="50" cy="42" rx="6" ry="8" />
           <ellipse cx="50" cy="58" rx="10" ry="14" />
@@ -657,31 +668,31 @@
         <p>Click to Connect</p>
       </div>
 
-      <!-- 1. ABOUT US -> ETHOS -> FOUNDER -->
-      <div class="node primary" id="node-about" style="left: -120px; top: -620px;" onclick="focusNode('node-about-detail')">
+      <!-- 1. ABOUT US -> ETHOS -> FOUNDER (TOP AXIS) -->
+      <div class="node primary" id="node-about" style="left: -105px; top: -320px;" onclick="focusNode('node-about-detail')">
         <span class="tag">01 / Overview</span>
         <h2>About Us</h2>
       </div>
 
-      <div class="node sub-node" id="node-about-detail" style="left: -180px; top: -1100px;" onclick="focusNode('node-founder-trigger')">
+      <div class="node sub-node" id="node-about-detail" style="left: -170px; top: -680px;" onclick="focusNode('node-founder-trigger')">
         <div class="flower-illustration">
           <svg viewBox="0 0 100 100">
             <polygon points="50,10 60,38 90,50 60,62 50,90 40,62 10,50 40,38" />
-            <polygon points="50,22 57,43 78,50 57,57 50,78 43,57 22,50 43,43" stroke="#d08f70" />
-            <circle cx="50" cy="50" r="4" fill="#a3be8c" />
+            <polygon points="50,22 57,43 78,50 57,57 50,78 43,57 22,50 43,43" stroke="#ca6641" />
+            <circle cx="50" cy="50" r="4" fill="#0F172A" />
           </svg>
         </div>
         <h3>Our Ethos & Craft</h3>
         <p>We treat websites as clean, interconnected spaces tailored specifically for small businesses. Click to learn about our leadership.</p>
       </div>
 
-      <div class="node sub-node" id="node-founder-trigger" style="left: -180px; top: -1520px;" onclick="focusNode('node-founder-profile')">
+      <div class="node sub-node" id="node-founder-trigger" style="left: -170px; top: -1020px;" onclick="focusNode('node-founder-profile')">
         <h3>Meet the Founder</h3>
         <p>Discover the driving force behind Anansy's design philosophy.</p>
       </div>
 
       <!-- FOUNDER PROFILE NODE -->
-      <div class="node sub-node founder-node" id="node-founder-profile" style="left: -220px; top: -2020px;">
+      <div class="node sub-node founder-node" id="node-founder-profile" style="left: -200px; top: -1880px;">
         <div class="founder-card">
           <h3>Founder & Lead Designer</h3>
           
@@ -690,7 +701,7 @@
           </div>
 
           <div>
-            <p style="font-weight: 600; color: #ffffff;">Steven Louis Stafford Jr.</p>
+            <p style="font-weight: 600; color: var(--text-main);">Steven Louis Stafford Jr.</p>
             <a class="founder-email-link" href="mailto:steven.louis.stafford.jr@gmail.com?subject=Project%20Inquiry%20-%20Anansy">
               steven.louis.stafford.jr@gmail.com
             </a>
@@ -722,29 +733,29 @@
         </div>
       </div>
 
-      <!-- 2. PURPOSE -->
-      <div class="node primary" id="node-purpose" style="left: 580px; top: -360px;" onclick="focusNode('node-purpose-detail')">
+      <!-- 2. PURPOSE (TOP RIGHT QUADRANT) -->
+      <div class="node primary" id="node-purpose" style="left: 320px; top: -200px;" onclick="focusNode('node-purpose-detail')">
         <span class="tag">02 / Mission</span>
         <h2>Purpose</h2>
       </div>
 
-      <div class="node sub-node" id="node-purpose-detail" style="left: 1100px; top: -580px;">
+      <div class="node sub-node" id="node-purpose-detail" style="left: 780px; top: -420px;">
         <h3>Small Business Focus</h3>
         <p>Our purpose is to make modern web creation approachable, streamlined, and effective for local business owners.</p>
       </div>
 
-      <!-- 3. WHY US + FAQ -->
-      <div class="node primary" id="node-whyus" style="left: 580px; top: 260px;" onclick="focusNode('node-whyus-detail')">
+      <!-- 3. WHY US + FAQ (RIGHT / BOTTOM RIGHT QUADRANT) -->
+      <div class="node primary" id="node-whyus" style="left: 350px; top: 180px;" onclick="focusNode('node-whyus-detail')">
         <span class="tag">03 / Difference</span>
         <h2>Why Us</h2>
       </div>
 
-      <div class="node sub-node" id="node-whyus-detail" style="left: 1100px; top: 400px;" onclick="focusNode('node-faq-detail')">
+      <div class="node sub-node" id="node-whyus-detail" style="left: 820px; top: 220px;" onclick="focusNode('node-faq-detail')">
         <h3>Tailored Digital Craft</h3>
         <p>Instead of generic templates, we build custom digital layouts designed specifically around your operational goals. Click to view common questions.</p>
       </div>
 
-      <div class="node sub-node" id="node-faq-detail" style="left: 1600px; top: 400px;">
+      <div class="node sub-node" id="node-faq-detail" style="left: 1320px; top: 120px;">
         <h3>Frequently Asked Questions</h3>
         <div class="faq-list">
           <div class="faq-item">
@@ -762,39 +773,39 @@
         </div>
       </div>
 
-      <!-- 4. LEGEND -->
-      <div class="node primary" id="node-legend" style="left: -120px; top: 520px;" onclick="focusNode('node-legend-detail')">
+      <!-- 4. LEGEND (BOTTOM AXIS) -->
+      <div class="node primary" id="node-legend" style="left: -105px; top: 320px;" onclick="focusNode('node-legend-detail')">
         <span class="tag">04 / Origin</span>
         <h2>The Legend</h2>
       </div>
 
-      <div class="node sub-node" id="node-legend-detail" style="left: -180px; top: 980px;">
+      <div class="node sub-node" id="node-legend-detail" style="left: -170px; top: 720px;">
         <h3>Anansi the Spider God</h3>
         <p>In West African folklore, Anansi is the revered trickster god of stories and wisdom who weaves narrative threads to outsmart larger forces. We draw inspiration from his craft—weaving web structures that help small brands punch above their weight.</p>
       </div>
 
-      <!-- 5. SERVICES -->
-      <div class="node primary" id="node-services" style="left: -780px; top: 260px;" onclick="focusNode('node-services-detail')">
+      <!-- 5. SERVICES (BOTTOM LEFT QUADRANT) -->
+      <div class="node primary" id="node-services" style="left: -380px; top: 280px;" onclick="focusNode('node-services-detail')">
         <span class="tag">05 / Offerings</span>
         <h2>Services</h2>
       </div>
 
-      <div class="node sub-node" id="node-services-detail" style="left: -1300px; top: 400px;">
+      <div class="node sub-node" id="node-services-detail" style="left: -880px; top: 620px;">
         <div class="laptop-spider-illustration">
           <svg viewBox="0 0 160 110">
-            <path d="M 80 0 L 80 35" stroke="#3b4252" stroke-width="1" />
+            <path d="M 80 0 L 80 35" stroke="#CBD5E1" stroke-width="1" />
             <g transform="translate(80, 35)">
-              <ellipse cx="0" cy="0" rx="4" ry="5" fill="#d08f70" />
-              <circle cx="0" cy="5" r="3" fill="#d08f70" />
-              <path d="M -2 -2 Q -10 -8 -12 0 M -2 0 Q -12 -2 -14 6 M -2 2 Q -10 8 -12 12" stroke="#88c0d0" stroke-width="1" />
-              <path d="M 2 -2 Q 10 -8 12 0 M 2 0 Q 12 -2 14 6 M 2 2 Q 10 8 12 12" stroke="#88c0d0" stroke-width="1" />
+              <ellipse cx="0" cy="0" rx="4" ry="5" fill="#ca6641" />
+              <circle cx="0" cy="5" r="3" fill="#ca6641" />
+              <path d="M -2 -2 Q -10 -8 -12 0 M -2 0 Q -12 -2 -14 6 M -2 2 Q -10 8 -12 12" stroke="#0F172A" stroke-width="1" />
+              <path d="M 2 -2 Q 10 -8 12 0 M 2 0 Q 12 -2 14 6 M 2 2 Q 10 8 12 12" stroke="#0F172A" stroke-width="1" />
             </g>
-            <rect x="35" y="48" width="90" height="52" rx="4" stroke="#88c0d0" stroke-width="1.5" fill="#181a20" />
-            <rect x="41" y="54" width="78" height="40" rx="2" stroke="#3b4252" stroke-width="1" />
-            <line x1="47" y1="62" x2="75" y2="62" stroke="#a3be8c" stroke-width="1.5" />
-            <line x1="47" y1="70" x2="95" y2="70" stroke="#88c0d0" stroke-width="1.5" />
-            <line x1="47" y1="78" x2="65" y2="78" stroke="#d08f70" stroke-width="1.5" />
-            <path d="M 20 102 L 140 102 M 70 102 L 90 102" stroke="#88c0d0" stroke-width="2.5" stroke-linecap="round" />
+            <rect x="35" y="48" width="90" height="52" rx="4" stroke="#0F172A" stroke-width="1.5" fill="#F3EFEA" />
+            <rect x="41" y="54" width="78" height="40" rx="2" stroke="#CBD5E1" stroke-width="1" />
+            <line x1="47" y1="62" x2="75" y2="62" stroke="#ca6641" stroke-width="1.5" />
+            <line x1="47" y1="70" x2="95" y2="70" stroke="#0F172A" stroke-width="1.5" />
+            <line x1="47" y1="78" x2="65" y2="78" stroke="#ca6641" stroke-width="1.5" />
+            <path d="M 20 102 L 140 102 M 70 102 L 90 102" stroke="#0F172A" stroke-width="2.5" stroke-linecap="round" />
           </svg>
         </div>
         <h3>What We Build</h3>
@@ -803,37 +814,108 @@
            • Speed & Search Optimization</p>
       </div>
 
-      <!-- 6. SUBMIT INQUIRY -->
-      <div class="node primary" id="node-contact" style="left: -780px; top: -360px;" onclick="focusNode('node-contact-detail')">
-        <span class="tag">06 / Connect</span>
+      <!-- 6. PRICING (MIDDLE LEFT AXIS) -->
+      <div class="node primary" id="node-pricing" style="left: -480px; top: 0px;" onclick="focusNode('node-pricing-detail')">
+        <span class="tag">06 / Investment</span>
+        <h2>Pricing</h2>
+      </div>
+
+      <!-- PUSHED DOWN & LEFT TO PREVENT OVERLAP WITH FORM ABOVE IT -->
+      <div class="node sub-node" id="node-pricing-detail" style="left: -1250px; top: 250px;">
+        <h3>Dynamic Scope Rates</h3>
+        <p>• <strong>Project Range:</strong> <strong>$475 – $1,112</strong> depending on custom features, visual complexity, and layout detail.<br><br>
+           • <strong>Tailored Quotas:</strong> Our inquiry compiler calculates a semi-accurate estimate based on your exact specifications.<br><br>
+           • <strong>Post-Launch Support:</strong> Optional maintenance, performance tuning, and continuous content updates available.</p>
+      </div>
+
+      <!-- 7. SUBMIT INQUIRY (TOP LEFT QUADRANT) -->
+      <div class="node primary" id="node-contact" style="left: -420px; top: -280px;" onclick="focusNode('node-contact-detail')">
+        <span class="tag">07 / Connect</span>
         <h2>Submit Inquiry</h2>
       </div>
 
-      <div class="node sub-node inquiry-node" id="node-contact-detail" style="left: -1360px; top: -580px; cursor: default;">
+      <!-- SHIFTED UPWARD TO PROVIDE CLEAR VERTICAL BUFFER -->
+      <div class="node sub-node inquiry-node" id="node-contact-detail" style="left: -1150px; top: -750px; cursor: default;">
         <div id="canvas-form-container">
-          <h3>Start a Project</h3>
+          <h3>Project Estimate & Inquiry</h3>
           <form class="inquiry-form" onsubmit="handleFormSubmit(event, 'canvas-form-container')">
             <input type="text" name="name" placeholder="Your Name or Business" required>
             <input type="email" name="email" placeholder="Contact Email" required>
             <input type="tel" name="phone" placeholder="Phone Number" required>
-            <textarea name="message" rows="5" placeholder="Briefly describe what you're looking for..." required></textarea>
-            <div class="form-subscript">
-              Suggestions: What style are you looking for? (e.g., colorful, minimalist, single-page, multi-page layout).
+            
+            <div class="form-group-label">1. Level of Visual Immersion (1-3)</div>
+            <div class="scale-container">
+              <label class="scale-option selected" onclick="selectScale(this)">
+                <input type="radio" name="immersion" value="1" checked>
+                <span class="scale-num">1</span>
+                <span class="scale-desc">Minimalist</span>
+              </label>
+              <label class="scale-option" onclick="selectScale(this)">
+                <input type="radio" name="immersion" value="2">
+                <span class="scale-num">2</span>
+                <span class="scale-desc">Balanced</span>
+              </label>
+              <label class="scale-option" onclick="selectScale(this)">
+                <input type="radio" name="immersion" value="3">
+                <span class="scale-num">3</span>
+                <span class="scale-desc">Highly Interactive</span>
+              </label>
             </div>
-            <button type="submit">Submit Inquiry</button>
+
+            <div class="form-group-label">2. Architectural Detail & Scope (1-3)</div>
+            <div class="scale-container">
+              <label class="scale-option selected" onclick="selectScale(this)">
+                <input type="radio" name="detail" value="1" checked>
+                <span class="scale-num">1</span>
+                <span class="scale-desc">Single-Page</span>
+              </label>
+              <label class="scale-option" onclick="selectScale(this)">
+                <input type="radio" name="detail" value="2">
+                <span class="scale-num">2</span>
+                <span class="scale-desc">Multi-Section</span>
+              </label>
+              <label class="scale-option" onclick="selectScale(this)">
+                <input type="radio" name="detail" value="3">
+                <span class="scale-num">3</span>
+                <span class="scale-desc">Complex Network</span>
+              </label>
+            </div>
+
+            <div class="form-group-label">3. Image & Media Assets Needed</div>
+            <select name="images" onchange="calculateQuota('canvas-form-container')">
+              <option value="1">1 - 5 High Quality Assets</option>
+              <option value="2">6 - 15 Custom Graphics/Photos</option>
+              <option value="3">15+ Media Intensive Gallery</option>
+            </select>
+
+            <div class="estimate-box">
+              <div class="estimate-title">Automated Calculated Quota</div>
+              <div class="estimate-amount" id="canvas-form-container-amount">$475</div>
+              <div class="estimate-disclaimer">*Estimated range based on inputs. Final scope and prices may vary upon project review.</div>
+              <input type="hidden" name="calculated_quota" id="canvas-form-container-hidden" value="$475">
+            </div>
+
+            <div class="form-group-label">4. Specific Vision & Requirements</div>
+            <textarea name="message" rows="3" placeholder="Specify what you're looking for, desired features, or aesthetic preferences..." required></textarea>
+
+            <div class="form-group-label">5. Preferred Meeting Schedule</div>
+            <div class="datetime-row">
+              <input type="date" name="preferred_date" required>
+              <input type="time" name="preferred_time" required>
+            </div>
+
+            <button type="submit">Submit Inquiry & Schedule</button>
           </form>
         </div>
       </div>
 
       <!-- DECORATIVE STRUCTURAL NODES -->
-      <div class="node decor-node" id="decor-1" style="left: 0px; top: -360px;"></div>
-      <div class="node decor-node" id="decor-2" style="left: 320px; top: -160px;"></div>
-      <div class="node decor-node" id="decor-3" style="left: 320px; top: 140px;"></div>
-      <div class="node decor-node" id="decor-4" style="left: 0px; top: 320px;"></div>
-      <div class="node decor-node" id="decor-5" style="left: -420px; top: 140px;"></div>
-      <div class="node decor-node" id="decor-6" style="left: -420px; top: -160px;"></div>
-      <div class="node decor-node" id="decor-7" style="left: 880px; top: -100px;"></div>
-      <div class="node decor-node" id="decor-8" style="left: -1040px; top: -100px;"></div>
+      <div class="node decor-node" id="decor-1" style="left: 0px; top: -220px;"></div>
+      <div class="node decor-node" id="decor-2" style="left: 180px; top: -110px;"></div>
+      <div class="node decor-node" id="decor-3" style="left: 180px; top: 110px;"></div>
+      <div class="node decor-node" id="decor-4" style="left: 0px; top: 220px;"></div>
+      <div class="node decor-node" id="decor-5" style="left: -200px; top: 110px;"></div>
+      <div class="node decor-node" id="decor-6" style="left: -200px; top: -110px;"></div>
 
     </div>
   </div>
@@ -844,17 +926,75 @@
       <button class="close-modal-btn" onclick="toggleClassicModal(false)">&times;</button>
       <div id="modal-form-container">
         <h2>Start Your Web Project</h2>
-        <p>Easy-to-read classic form layout for getting in touch directly with Anansy.</p>
+        <p>Easy-to-read guided estimation form for getting in touch directly with Anansy.</p>
 
         <form class="inquiry-form" onsubmit="handleFormSubmit(event, 'modal-form-container')">
           <input type="text" name="name" placeholder="Your Name or Business Name" required>
           <input type="email" name="email" placeholder="Email Address" required>
           <input type="tel" name="phone" placeholder="Phone Number" required>
-          <textarea name="message" rows="6" placeholder="Tell us about your project..." required></textarea>
-          <div class="form-subscript">
-            Suggestions: Tell us what style fits your brand (e.g., colorful, minimalist, single page, custom features).
+
+          <div class="form-group-label">1. Level of Visual Immersion (1-3)</div>
+          <div class="scale-container">
+            <label class="scale-option selected" onclick="selectScale(this)">
+              <input type="radio" name="immersion" value="1" checked>
+              <span class="scale-num">1</span>
+              <span class="scale-desc">Minimalist</span>
+            </label>
+            <label class="scale-option" onclick="selectScale(this)">
+              <input type="radio" name="immersion" value="2">
+              <span class="scale-num">2</span>
+              <span class="scale-desc">Balanced</span>
+            </label>
+            <label class="scale-option" onclick="selectScale(this)">
+              <input type="radio" name="immersion" value="3">
+              <span class="scale-num">3</span>
+              <span class="scale-desc">Highly Interactive</span>
+            </label>
           </div>
-          <button type="submit">Submit Inquiry</button>
+
+          <div class="form-group-label">2. Architectural Detail & Scope (1-3)</div>
+          <div class="scale-container">
+            <label class="scale-option selected" onclick="selectScale(this)">
+              <input type="radio" name="detail" value="1" checked>
+              <span class="scale-num">1</span>
+              <span class="scale-desc">Single-Page</span>
+            </label>
+            <label class="scale-option" onclick="selectScale(this)">
+              <input type="radio" name="detail" value="2">
+              <span class="scale-num">2</span>
+              <span class="scale-desc">Multi-Section</span>
+            </label>
+            <label class="scale-option" onclick="selectScale(this)">
+              <input type="radio" name="detail" value="3">
+              <span class="scale-num">3</span>
+              <span class="scale-desc">Complex Network</span>
+            </label>
+          </div>
+
+          <div class="form-group-label">3. Image & Media Assets Needed</div>
+          <select name="images" onchange="calculateQuota('modal-form-container')">
+            <option value="1">1 - 5 High Quality Assets</option>
+            <option value="2">6 - 15 Custom Graphics/Photos</option>
+            <option value="3">15+ Media Intensive Gallery</option>
+          </select>
+
+          <div class="estimate-box">
+            <div class="estimate-title">Automated Calculated Quota</div>
+            <div class="estimate-amount" id="modal-form-container-amount">$475</div>
+            <div class="estimate-disclaimer">*Estimated range based on inputs. Final scope and prices may vary upon project review.</div>
+            <input type="hidden" name="calculated_quota" id="modal-form-container-hidden" value="$475">
+          </div>
+
+          <div class="form-group-label">4. Specific Vision & Requirements</div>
+          <textarea name="message" rows="3" placeholder="Tell us what you are looking for..." required></textarea>
+
+          <div class="form-group-label">5. Preferred Meeting Schedule</div>
+          <div class="datetime-row">
+            <input type="date" name="preferred_date" required>
+            <input type="time" name="preferred_time" required>
+          </div>
+
+          <button type="submit">Submit Inquiry & Schedule</button>
         </form>
       </div>
     </div>
@@ -863,7 +1003,41 @@
   <script>
     const FORMSPREE_ENDPOINT = "https://formspree.io/f/mdeknwwq";
 
-    /* SILENT AJAX SUBMISSION HANDLER */
+    /* CALCULATOR ENGINE (INSTANT LIVE UPDATE) */
+    function selectScale(element) {
+      const parent = element.closest('.scale-container');
+      parent.querySelectorAll('.scale-option').forEach(opt => opt.classList.remove('selected'));
+      element.classList.add('selected');
+      const radio = element.querySelector('input[type="radio"]');
+      if (radio) {
+        radio.checked = true;
+      }
+
+      const formContainer = element.closest('#canvas-form-container') ? 'canvas-form-container' : 'modal-form-container';
+      calculateQuota(formContainer);
+    }
+
+    function calculateQuota(containerId) {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+
+      const immersion = parseInt(container.querySelector('input[name="immersion"]:checked')?.value || 1);
+      const detail = parseInt(container.querySelector('input[name="detail"]:checked')?.value || 1);
+      const images = parseInt(container.querySelector('select[name="images"]')?.value || 1);
+
+      const minPrice = 475;
+      const maxPrice = 1112;
+      const totalScore = immersion + detail + images;
+      
+      const price = Math.round(minPrice + ((totalScore - 3) / 6) * (maxPrice - minPrice));
+
+      const amountEl = document.getElementById(`${containerId}-amount`);
+      const hiddenEl = document.getElementById(`${containerId}-hidden`);
+
+      if (amountEl) amountEl.innerText = `$${price}`;
+      if (hiddenEl) hiddenEl.value = `$${price}`;
+    }
+
     function handleFormSubmit(event, containerId) {
       event.preventDefault();
       const form = event.target;
@@ -886,7 +1060,7 @@
         if (response.ok) {
           showThankYouMessage(containerId);
         } else {
-          alert("There was an issue sending your message. Please check your connection and try again.");
+          alert("There was an issue sending your message. Please try again.");
           submitBtn.disabled = false;
           submitBtn.innerText = originalBtnText;
         }
@@ -901,11 +1075,10 @@
     function showThankYouMessage(containerId) {
       const container = document.getElementById(containerId);
       container.innerHTML = `
-        <div class="thank-you-card">
-          <h4>✓ Thank you, we got your submission!</h4>
-          <p>Your inquiry has been sent directly to our team. We'll review your details and reach back out to you shortly.</p>
-          <button class="return-btn" onclick="returnToMainPage()">Return to Canvas Main Hub</button>
-          <p class="close-hint">You can safely close this page now.</p>
+        <div style="display:flex; flex-direction:column; gap:12px; padding:12px 0;">
+          <h4 style="font-size:1.1rem; color:var(--text-main);">✓ Thank you, your inquiry has been received!</h4>
+          <p style="font-size:0.88rem; color:var(--text-muted); line-height:1.5;">We have received your detailed requirements and preferred meeting schedule. We will review your calculated quota and connect with you shortly.</p>
+          <button style="align-self:flex-start; background:var(--accent-color); color:#fff; border:none; padding:8px 18px; border-radius:20px; font-size:0.82rem; cursor:pointer;" onclick="returnToMainPage()">Return to Canvas Hub</button>
         </div>
       `;
     }
@@ -921,13 +1094,15 @@
       { from: 'node-center', to: 'node-whyus', weight: 'thick' },
       { from: 'node-center', to: 'node-legend', weight: 'thick' },
       { from: 'node-center', to: 'node-services', weight: 'thick' },
+      { from: 'node-center', to: 'node-pricing', weight: 'thick' },
       { from: 'node-center', to: 'node-contact', weight: 'thick' },
 
       { from: 'node-about', to: 'node-purpose', weight: 'normal' },
       { from: 'node-purpose', to: 'node-whyus', weight: 'normal' },
       { from: 'node-whyus', to: 'node-legend', weight: 'normal' },
       { from: 'node-legend', to: 'node-services', weight: 'normal' },
-      { from: 'node-services', to: 'node-contact', weight: 'normal' },
+      { from: 'node-services', to: 'node-pricing', weight: 'normal' },
+      { from: 'node-pricing', to: 'node-contact', weight: 'normal' },
       { from: 'node-contact', to: 'node-about', weight: 'normal' },
 
       { from: 'node-about', to: 'node-about-detail', weight: 'normal' },
@@ -939,6 +1114,7 @@
       { from: 'node-whyus-detail', to: 'node-faq-detail', weight: 'thin' },
       { from: 'node-legend', to: 'node-legend-detail', weight: 'normal' },
       { from: 'node-services', to: 'node-services-detail', weight: 'normal' },
+      { from: 'node-pricing', to: 'node-pricing-detail', weight: 'normal' },
       { from: 'node-contact', to: 'node-contact-detail', weight: 'normal' },
 
       { from: 'node-center', to: 'decor-1', weight: 'thin' },
@@ -946,17 +1122,7 @@
       { from: 'node-center', to: 'decor-3', weight: 'thin' },
       { from: 'node-center', to: 'decor-4', weight: 'thin' },
       { from: 'node-center', to: 'decor-5', weight: 'thin' },
-      { from: 'node-center', to: 'decor-6', weight: 'thin' },
-      { from: 'decor-1', to: 'decor-2', weight: 'thin' },
-      { from: 'decor-2', to: 'decor-3', weight: 'thin' },
-      { from: 'decor-3', to: 'decor-4', weight: 'thin' },
-      { from: 'decor-4', to: 'decor-5', weight: 'thin' },
-      { from: 'decor-5', to: 'decor-6', weight: 'thin' },
-      { from: 'decor-6', to: 'decor-1', weight: 'thin' },
-      { from: 'node-purpose-detail', to: 'decor-7', weight: 'thin' },
-      { from: 'node-whyus-detail', to: 'decor-7', weight: 'thin' },
-      { from: 'node-contact-detail', to: 'decor-8', weight: 'thin' },
-      { from: 'node-services-detail', to: 'decor-8', weight: 'thin' }
+      { from: 'node-center', to: 'decor-6', weight: 'thin' }
     ];
 
     const viewport = document.getElementById('viewport');
@@ -970,7 +1136,7 @@
     let isDragging = false;
     let startX, startY;
 
-    const MAX_DRAG_RADIUS = 2200;
+    const MAX_DRAG_RADIUS = 3500;
 
     function toggleClassicModal(show) {
       if (show) {
@@ -1037,13 +1203,13 @@
         ctx.beginPath();
         
         if (weight === 'thick') {
-          ctx.strokeStyle = '#88c0d0';
-          ctx.lineWidth = 2.2;
+          ctx.strokeStyle = '#ca6641';
+          ctx.lineWidth = 1.8;
         } else if (weight === 'thin') {
-          ctx.strokeStyle = 'rgba(59, 66, 82, 0.4)';
+          ctx.strokeStyle = '#CBD5E1';
           ctx.lineWidth = 0.8;
         } else {
-          ctx.strokeStyle = '#3b4252';
+          ctx.strokeStyle = '#94A3B8';
           ctx.lineWidth = 1.2;
         }
 
@@ -1052,7 +1218,7 @@
         ctx.stroke();
 
         if (weight !== 'thin') {
-          ctx.fillStyle = '#88c0d0';
+          ctx.fillStyle = '#ca6641';
           ctx.beginPath();
           ctx.arc(toPos.x, toPos.y, 2.5, 0, Math.PI * 2);
           ctx.fill();
@@ -1070,7 +1236,7 @@
     }
 
     viewport.addEventListener('mousedown', (e) => {
-      if (['INPUT', 'TEXTAREA', 'BUTTON', 'A'].includes(e.target.tagName)) return;
+      if (['INPUT', 'TEXTAREA', 'BUTTON', 'A', 'SELECT', 'LABEL'].includes(e.target.tagName)) return;
       isDragging = true;
       startX = e.clientX - camX;
       startY = e.clientY - camY;
@@ -1103,12 +1269,12 @@
 
     function createParticles() {
       particles = [];
-      for (let i = 0; i < 28; i++) {
+      for (let i = 0; i < 24; i++) {
         particles.push({
           x: Math.random() * window.innerWidth,
           y: Math.random() * window.innerHeight,
-          radius: Math.random() * 2.5 + 1,
-          alpha: Math.random() * 0.4 + 0.1,
+          radius: Math.random() * 2 + 1,
+          alpha: Math.random() * 0.3 + 0.1,
           speedX: (Math.random() - 0.5) * 0.2,
           speedY: (Math.random() - 0.5) * 0.2
         });
@@ -1138,7 +1304,7 @@
 
         pCtx.beginPath();
         pCtx.arc(drawX, drawY, p.radius, 0, Math.PI * 2);
-        pCtx.fillStyle = `rgba(255, 255, 255, ${p.alpha})`;
+        pCtx.fillStyle = `rgba(15, 23, 42, ${p.alpha})`;
         pCtx.fill();
       });
 
@@ -1208,6 +1374,14 @@
       crawler.style.left = `${centerCoords.x}px`;
       crawler.style.top = `${centerCoords.y}px`;
       setTimeout(crawlWeb, 2000);
+
+      // Event listeners for radio button instant calculations
+      document.querySelectorAll('input[type="radio"][name="immersion"], input[type="radio"][name="detail"]').forEach(radio => {
+        radio.addEventListener('change', (e) => {
+          const containerId = e.target.closest('#canvas-form-container') ? 'canvas-form-container' : 'modal-form-container';
+          calculateQuota(containerId);
+        });
+      });
     };
   </script>
 </body>
