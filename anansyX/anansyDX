@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anansy | Web Design for Small Businesses</title>
+  <style>
+    /* ==========================================================================
+       1. COLOR PALETTE & RESET (Minimalist Slate & Neutral Pastels)
+       ========================================================================== */
+    :root {
+      --bg-color: #1e222a;          /* Deep Slate Background */
+      --canvas-line: #3b4252;       /* Subtle Slate Web Lines */
+      --canvas-active: #88c0d0;     /* Soft Pastel Blue-Cyan Glow */
+      
+      --node-bg: #2e3440;           /* Slate Box Background */
+      --node-border: #434c5e;       /* Muted Border */
+      --node-active-border: #88c0d0;/* Active Node Border */
+      
+      --text-main: #e5e9f0;         /* Off-white / Cream Text */
+      --text-muted: #d8dee9;        /* Soft Gray-White */
+      --accent-pastel: #d08f70;     /* Pastel Terracotta Accent */
+      
+      --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body, html {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: var(--bg-color);
+      font-family: var(--font-main);
+      color: var(--text-main);
+    }
+
+    /* Background Canvas for Dynamic Web Connections */
+    #web-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* ==========================================================================
+       2. NODE NETWORK LAYOUT (Spiderweb Flow)
+       ========================================================================== */
+    .network-container {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      z-index: 2;
+    }
+
+    /* Node Cards */
+    .node {
+      position: absolute;
+      background: var(--node-bg);
+      border: 1px solid var(--node-border);
+      border-radius: 12px;
+      padding: 24px;
+      width: 280px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .node:hover {
+      border-color: var(--node-active-border);
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 12px 35px rgba(136, 192, 208, 0.15);
+    }
+
+    /* Central Brand Node Special Styling */
+    .node.center-node {
+      width: 320px;
+      text-align: center;
+      border-color: var(--accent-pastel);
+    }
+
+    .node.center-node h1 {
+      font-size: 2.2rem;
+      letter-spacing: 2px;
+      color: #ffffff;
+      margin-bottom: 8px;
+    }
+
+    .node.center-node p {
+      font-size: 0.9rem;
+      color: var(--accent-pastel);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* Standard Node Headers */
+    .node h2 {
+      font-size: 1.1rem;
+      margin-bottom: 10px;
+      font-weight: 500;
+      color: #ffffff;
+    }
+
+    .node p {
+      font-size: 0.88rem;
+      line-height: 1.5;
+      color: var(--text-muted);
+    }
+
+    /* Position Nodes in a Web Layout */
+    #node-center  { top: 50%; left: 50%; transform: translate(-50%, -50%); }
+    #node-purpose { top: 18%; left: 22%; }
+    #node-about   { top: 18%; right: 22%; }
+    #node-services{ bottom: 18%; left: 22%; }
+    #node-contact { bottom: 18%; right: 22%; }
+
+    /* Forms & Inputs inside Nodes */
+    .inquiry-form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .inquiry-form input,
+    .inquiry-form textarea {
+      width: 100%;
+      background: var(--bg-color);
+      border: 1px solid var(--node-border);
+      padding: 8px 12px;
+      border-radius: 6px;
+      color: var(--text-main);
+      font-size: 0.85rem;
+      outline: none;
+    }
+
+    .inquiry-form input:focus,
+    .inquiry-form textarea:focus {
+      border-color: var(--node-active-border);
+    }
+
+    .inquiry-form button {
+      background: var(--accent-pastel);
+      color: #ffffff;
+      border: none;
+      padding: 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: opacity 0.2s;
+    }
+
+    .inquiry-form button:hover {
+      opacity: 0.9;
+    }
+
+    /* Responsive adjustment for small displays */
+    @media (max-width: 900px) {
+      body, html { overflow: auto; }
+      .network-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        padding: 40px 20px;
+        height: auto;
+      }
+      .node { position: relative !important; top: auto !important; left: auto !important; right: auto !important; bottom: auto !important; transform: none !important; width: 100%; max-width: 400px; }
+      #web-canvas { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background Layer for Web Connections -->
+  <canvas id="web-canvas"></canvas>
+
+  <!-- Interactive Node Network -->
+  <main class="network-container">
+
+    <!-- Node 0: Center Hub -->
+    <div class="node center-node" id="node-center">
+      <h1>ANANSY</h1>
+      <p>Crafting Web Experience</p>
+    </div>
+
+    <!-- Node 1: Purpose -->
+    <div class="node" id="node-purpose">
+      <h2>01 / Purpose</h2>
+      <p>We weave elegant, minimalist digital spaces tailored specifically for small businesses—helping your brand stand out with intention and clarity.</p>
+    </div>
+
+    <!-- Node 2: About Us -->
+    <div class="node" id="node-about">
+      <h2>02 / About Us</h2>
+      <p>Inspired by connection and craftsmanship, Anansy creates websites that feel natural, light, and focused—removing digital clutter to highlight what matters most.</p>
+    </div>
+
+    <!-- Node 3: Services -->
+    <div class="node" id="node-services">
+      <h2>03 / What We Build</h2>
+      <p>Custom Web Design<br>Responsive Development<br>SEO & Brand Strategy<br>Maintenance & Hosting</p>
+    </div>
+
+    <!-- Node 4: Inquiry Form -->
+    <div class="node" id="node-contact">
+      <h2>04 / Submit Inquiry</h2>
+      <form class="inquiry-form" onsubmit="event.preventDefault(); alert('Inquiry Sent!');">
+        <input type="text" placeholder="Your Name" required>
+        <input type="email" placeholder="Business Email" required>
+        <textarea rows="3" placeholder="Tell us about your project..." required></textarea>
+        <button type="submit">Connect with Us</button>
+      </form>
+    </div>
+
+  </main>
+
+  <!-- Canvas Script for Dynamic Spiderweb Lines -->
+  <script>
+    const canvas = document.getElementById('web-canvas');
+    const ctx = canvas.getContext('2d');
+
+    const centerNode = document.getElementById('node-center');
+    const outerNodes = [
+      document.getElementById('node-purpose'),
+      document.getElementById('node-about'),
+      document.getElementById('node-services'),
+      document.getElementById('node-contact')
+    ];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    function getNodeCenter(element) {
+      const rect = element.getBoundingClientRect();
+      return {
+        x: rect.left + rect.width / 2,
+        y: rect.top + rect.height / 2
+      };
+    }
+
+    function drawWeb() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      if (window.innerWidth <= 900) return; // Disable lines on mobile layout
+
+      const centerPos = getNodeCenter(centerNode);
+      const outerPositions = outerNodes.map(node => getNodeCenter(node));
+
+      // Draw lines connecting the central hub to each outer node
+      ctx.strokeStyle = '#3b4252';
+      ctx.lineWidth = 1.5;
+
+      outerPositions.forEach(pos => {
+        ctx.beginPath();
+        ctx.moveTo(centerPos.x, centerPos.y);
+        ctx.lineTo(pos.x, pos.y);
+        ctx.stroke();
+      });
+
+      // Draw connecting perimeter lines to complete the web structure
+      ctx.strokeStyle = 'rgba(59, 66, 82, 0.5)';
+      ctx.lineWidth = 1;
+      
+      for (let i = 0; i < outerPositions.length; i++) {
+        const current = outerPositions[i];
+        const next = outerPositions[(i + 1) % outerPositions.length];
+        
+        ctx.beginPath();
+        ctx.moveTo(current.x, current.y);
+        ctx.lineTo(next.x, next.y);
+        ctx.stroke();
+      }
+    }
+
+    window.addEventListener('resize', () => {
+      resizeCanvas();
+      drawWeb();
+    });
+
+    // Initialize layout and redraw lines after initial render
+    resizeCanvas();
+    setTimeout(drawWeb, 50);
+  </script>
+</body>
+</html>
